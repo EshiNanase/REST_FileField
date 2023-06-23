@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "rest-filefield"
+version = "0.1.0"
+description = ""
+authors = ["Nanashi <alksndr.zln@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rest_filefield"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "3.2.18"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
