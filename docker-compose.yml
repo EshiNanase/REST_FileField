@@ -1,25 +1,30 @@
 version: "3.8"
 
 services:
-  api:
-      build: .
-      command: sh -c "poetry run alembic upgrade head -с app/alembic.ini &&
-                      poetry run uvicorn app.src.main:app --host 0.0.0.0"
-      volumes:
-        - ./app:/code/app/
-      depends_on:
-        - db
-      environment:
-        DATABASE_URL: "postgresql+asyncpg://postgres:postgres@0.0.0.0:5432/postgres"
-      ports:
-        - "127.0.0.1:8001:8000"
+  app:
+    build: .
+    command: sh -c "poetry run python3 manage.py migrate &&
+                    poetry run python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./src:/code/src/
+      - media:/code/src/media
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
 
   db:
     image: postgres:14.1-alpine
     restart: always
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "postgres"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
     ports:
       - "5432:5432"
+
+volumes:
+  postgres:
+  media:
