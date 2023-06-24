@@ -25,6 +25,24 @@ services:
     ports:
       - "5432:5432"
 
+  redis:
+    image: redis:alpine
+    restart: always
+
+  celery:
+    build: .
+    restart: always
+    command: sh -c "poetry run celery -A config worker -l info"
+    volumes:
+      - ./src:/code/src/
+      - media:/code/src/media
+    depends_on:
+      - db
+      - redis
+      - app
+    env_file:
+      - .env
+
 volumes:
   postgres:
   media:

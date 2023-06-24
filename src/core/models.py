@@ -23,4 +23,4 @@ class File(models.Model):
         verbose_name_plural = 'Файлы'
 
     def __str__(self):
-        return f'{self.file}'
+        return f'{self.id}'
