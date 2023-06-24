@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
-from .serializers import FileSerializer
+from .serializers import FileSerializer, FileRetrieveSerializer
 from .models import File
 from http import HTTPStatus
 
@@ -34,7 +34,7 @@ def create_file(request):
 @api_view(['GET'])
 def get_files(request):
     files = File.objects.all()
-    serializer = FileSerializer(files, many=True)
+    serializer = FileRetrieveSerializer(files, many=True)
     return Response(
         data=serializer.data,
         status=HTTPStatus.OK
